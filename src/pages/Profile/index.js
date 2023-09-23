@@ -10,7 +10,9 @@ import { AuthContext } from "../../contexts/auth"
 import './profile.css'
 
 export default function Profile(){
-    const {user} = useContext(AuthContext)
+    const {user, storageUser, setUser} = useContext(AuthContext)
+    const [nome, setNome] = useState(user && user.nome)
+    const [email, setEmail] = useState(user && user.email)
 
     const [avatarUrl, setAvatarUrl] = useState(user && user.avatarUrl)
 
@@ -38,9 +40,23 @@ export default function Profile(){
                             )}
 
                         </label>
+
+                        <label>Nome</label>
+                        <input type="text" value={nome} onChange={(e) => setNome(e.target.value)}/>
+
+                        <label>Email</label>
+                        <input type="text" placeholder="teste@teste.com" disabled={true}/>
+
+                        <button type="submit" value={email}>Salvar</button>
                     </form>
 
                 </div>
+
+                <div className="container">
+                    <button className="logout-btn">Sair</button>
+                </div>
+
+
 
             </div>
         </div>
