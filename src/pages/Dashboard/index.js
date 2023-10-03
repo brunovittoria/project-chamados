@@ -26,7 +26,7 @@ export default function Dashboard(){
         </Title>
 
         <>
-          <Link className='new'>
+          <Link to={'/new'} className='new'>
            <FiPlus color='#fff' size={25}/>
            Novo Chamado
           </Link>
@@ -44,6 +44,21 @@ export default function Dashboard(){
             <tbody>
               <tr>
                 <td data-label="Cliente">Mercado Esquina</td>
+                <td data-label="Assunto">Suporte</td>
+                <td data-label="Status">Em Aberto</td>
+                <td data-label="Cadastrado">12/05/2022</td>
+                <td data-label="#">
+                  <button className='action' style={{ backgroundColor: '#3583f6'}}>
+                    <FiSearch color='#fff' size={17}/>
+                  </button>
+                  <button className='action' style={{backgroundColor: '#f6a935'}}>
+                    <FiEdit2 color='#FFF' size={17}/>
+                  </button>
+                </td>
+              </tr>
+
+              <tr>
+                <td data-label="Cliente">Tech Informatica</td>
                 <td data-label="Assunto">Suporte</td>
                 <td data-label="Status">Em Aberto</td>
                 <td data-label="Cadastrado">12/05/2022</td>
