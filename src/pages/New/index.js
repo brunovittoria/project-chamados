@@ -1,20 +1,49 @@
 import Header from '../../components/Header'
 import Title from '../../components/Title'
 import { FiPlusCircle } from 'react-icons/fi'
-import { useState } from 'react'
+import { useState, useEffect, useContext } from 'react'
+
+import { AuthContext } from '../../contexts/auth'
+import { db } from '../../services/firebaseConnection'
+import {collection, getDocs, getDoc, doc} from 'firebase/firestore'
 
 import './new.css'
 
+const listRef = collection(db, "customers")
+
 export default function New(){
+    const { user } = useContext(AuthContext)
 
     const [customers, setCustomers] = useState([])
+    const [loadCustomers, setloadCustomers] = useState(true)
 
     const [complemento, setComplemento] = useState('')
     const [assunto, setAssunto] = useState('Suporte')
     const [status, setStatus] = useState('Aberto')
 
+    useEffect(() => {
+        async function loadCustomers(){
+            const querySnapshot = await getDocs(listRef)
+            .then( (snapshot) => {
+                let lista = []
+
+                snapshot.forEach((doc))
+            })
+            .catch((error) => {
+                console.log("Erro ao buscar CLIENTES", error)
+                setloadCustomers(false)
+                setCustomers([ { id: '1', nomeFantasia: 'FREELA'} ])
+            })
+        }
+    })
+
     function handleOptionChange(e){
         setStatus(e.target.value)
+    }
+
+    function handleChangeSelect(e){
+        setAssunto(e.target.value)
+        console.log(e.target.value)
     }
 
     return(
@@ -35,7 +64,7 @@ export default function New(){
                         </select>
 
                         <label>Assunto</label>
-                        <select>
+                        <select value={assunto} onChange={handleChangeSelect}>
                             <option value="Suporte">Suporte</option>
                             <option value="Visita Tecnica">Visita Tecnica</option>
                             <option value="Financeiro">Financeiro</option>
