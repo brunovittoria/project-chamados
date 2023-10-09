@@ -5,7 +5,9 @@ import { useState, useEffect, useContext } from 'react'
 
 import { AuthContext } from '../../contexts/auth'
 import { db } from '../../services/firebaseConnection'
-import {collection, getDocs, getDoc, doc} from 'firebase/firestore'
+import {collection, getDocs, getDoc, doc, addDoc} from 'firebase/firestore'
+
+import { toast } from 'react-toastify'
 
 import './new.css'
 
@@ -16,6 +18,7 @@ export default function New(){
 
     const [customers, setCustomers] = useState([])
     const [loadCustomers, setloadCustomers] = useState(true)
+    const [customerSelected, setcustomerSelected] = useState()
 
     const [complemento, setComplemento] = useState('')
     const [assunto, setAssunto] = useState('Suporte')
@@ -27,15 +30,35 @@ export default function New(){
             .then( (snapshot) => {
                 let lista = []
 
-                snapshot.forEach((doc))
+                snapshot.forEach((doc) => {
+                    lista.push({
+                        id: doc.id,
+                        nomeFantasia: doc.data().nomeFantasia
+                    })
+                })
+
+                if(snapshot.docs.size === 0){
+                    console.log("Nenhuma Empresa ENCONTRADA")
+                    setCustomers([ { id: '1', nomeFantasia: 'FREELA'}])
+                    setloadCustomers(false)
+                    return
+                }
+
+                setCustomers(lista)
+                setloadCustomers(false)
+
             })
+
             .catch((error) => {
                 console.log("Erro ao buscar CLIENTES", error)
                 setloadCustomers(false)
                 setCustomers([ { id: '1', nomeFantasia: 'FREELA'} ])
             })
         }
-    })
+
+        loadCustomers()
+
+    }, [])
 
     function handleOptionChange(e){
         setStatus(e.target.value)
@@ -44,6 +67,35 @@ export default function New(){
     function handleChangeSelect(e){
         setAssunto(e.target.value)
         console.log(e.target.value)
+    }
+
+    function handleChangeSelected(e){
+        setcustomerSelected(e.target.value)
+    }
+
+    async function handleRegister(e){
+        e.preventDefault()
+
+        //Registrar um chamado
+        await addDoc(collection(db, "chamados"), {
+            created: new Date(),
+            cliente: customers[customerSelected].nomeFantasia,
+            clienteId: customers[customerSelected].id,
+            assunto: assunto,
+            complemento: complemento,
+            status: status,
+            userId: user.uid,
+        })
+        .then(() => {
+            toast.success("Chamado registrado!")
+            setComplemento('')
+            setcustomerSelected(0)
+        })
+        .catch((error) => {
+            toast.error("Ops erro ao registrar, tente mais tarde!")
+            console.log(error)
+        })
+
     }
 
     return(
@@ -56,12 +108,23 @@ export default function New(){
                 </Title>
 
                 <div className='container'>
-                    <form className='form-profile'>
+                    <form className='form-profile' onSubmit={handleRegister}>
                         <label>Clientes</label>
-                        <select>
-                            <option key={1} value={1}>Mercado Teste</option>
-                            <option key={2} value={2}>Loja Informatica</option>
-                        </select>
+                        {
+                            loadCustomers ? (
+                                <input type='text' disabled={true} value="Carregando..." />
+                            ) : (
+                                <select value={customerSelected} onChange={handleChangeSelected}>
+                                    {customers.map((item, index) => {
+                                        return(
+                                            <option key={index} value={index}>
+                                              {item.nomeFantasia}
+                                            </option>
+                                        )
+                                    })}
+                                </select>
+                            )
+                        }
 
                         <label>Assunto</label>
                         <select value={assunto} onChange={handleChangeSelect}>
