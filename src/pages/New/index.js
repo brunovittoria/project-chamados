@@ -5,9 +5,9 @@ import { useState, useEffect, useContext } from 'react'
 
 import { AuthContext } from '../../contexts/auth'
 import { db } from '../../services/firebaseConnection'
-import {collection, getDocs, getDoc, doc, addDoc} from 'firebase/firestore'
+import {collection, getDocs, getDoc, doc, addDoc, updateDoc} from 'firebase/firestore'
 
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 
 import { toast } from 'react-toastify'
 
@@ -18,6 +18,7 @@ const listRef = collection(db, "customers")
 export default function New(){
     const { user } = useContext(AuthContext)
     const { id } = useParams()
+    const navigate = useNavigate()
 
     const [customers, setCustomers] = useState([])
     const [loadCustomers, setloadCustomers] = useState(true)
@@ -106,7 +107,27 @@ export default function New(){
         e.preventDefault()
 
         if(idCustomer){
-            alert("EDITANDO CHAMADO")
+            //ATUALIZANDO CHAMADO
+            const docRef = doc(db, "chamados", id)
+            await updateDoc(docRef, {
+                cliente: customers[customerSelected].nomeFantasia,
+                clienteId: customers[customerSelected].id,
+                assunto: assunto,
+                complemento: complemento,
+                status: status,
+                userId: user.uid,
+            })
+            .then(() => {
+                toast.info("Chamado atualizado com sucesso!")
+                setcustomerSelected(0)
+                setComplemento('')
+                navigate('/dashboard')
+            })
+            .catch((error) => {
+                toast.error("Ops erro ao atualizar esse ticket!")
+                console.log(error)
+            })
+
             return
         }
 
@@ -137,7 +158,7 @@ export default function New(){
             <Header/>
 
             <div className='content'>
-                <Title name="Novo Chamado">
+                <Title name={id ? "Editando Chamado" : "Novo Chamado"}>
                     <FiPlusCircle size={25}/>
                 </Title>
 
