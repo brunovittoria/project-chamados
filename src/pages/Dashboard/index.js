@@ -88,6 +88,7 @@ export default function Dashboard(){
   function toggleModal(item){
     setShowPostModal(!showPostModal)
     setDetail(item)
+    console.log(item)
   }
 
 
@@ -184,7 +185,7 @@ export default function Dashboard(){
       {showPostModal && (
         <Modal
           conteudo={detail}
-          cl
+          close={ () => setShowPostModal(!showPostModal) }
         />
       )}
 
