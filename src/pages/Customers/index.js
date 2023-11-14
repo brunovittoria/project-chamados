@@ -28,15 +28,15 @@ export default function Customers(){
             setNome('')
             setCnpj('')
             setEndereco('')
-            toast.success("Empresa registrada!")
+            toast.success("Company Registered!")
            })
            .catch((error) => {
             console.log(error)
-            toast.error("Erro ao fazer o cadastro.")
+            toast.error("Error at registering.")
            })
            
         }else{
-            toast.error("Preencha todos os campos!")
+            toast.error("Fill in all the fields!")
         }
 
 
@@ -53,10 +53,10 @@ export default function Customers(){
 
                 <div className='container'>
                     <form className='form-profile' onSubmit={handleRegister}>
-                        <label>Nome Fantasia</label>
+                        <label>Company Name</label>
                         <input
                           type='text'
-                          placeholder='Nome da Empresa'
+                          placeholder='Company Name'
                           value={nome}
                           onChange={(e) => setNome(e.target.value)}
                         />
@@ -64,21 +64,21 @@ export default function Customers(){
                         <label>CNPJ</label>
                         <input
                           type='text'
-                          placeholder='Digite o CNPJ'
+                          placeholder='CNPJ'
                           value={cnpj}
                           onChange={(e) => setCnpj(e.target.value)}
                         />
 
-                        <label>Endereço</label>
+                        <label>Company Adress</label>
                         <input
                           type='text'
-                          placeholder='Endereço da Empresa'
+                          placeholder='Company Adress'
                           value={endereco}
                           onChange={(e) => setEndereco(e.target.value)}
                         />
 
                         <button type='submit'>
-                            Salvar
+                            Save
                         </button>
                     </form>
                 </div>

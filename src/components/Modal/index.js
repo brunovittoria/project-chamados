@@ -7,24 +7,24 @@ export default function Modal({conteudo, close}) {
             <div className='container'>
                 <button className='close' onClick={close}>
                     <FiX size={25} color='#FFF'/>
-                    Voltar
+                    Back
                 </button>
 
                 <main>
-                    <h2>Detalhes do Chamado</h2>
+                    <h2>Ticket Detail</h2>
 
                     <div className='row'>
                         <span>
-                            Cliente: <i>{conteudo.cliente}</i>
+                            Client: <i>{conteudo.cliente}</i>
                         </span>
                     </div>
 
                     <div className='row'>
                         <span>
-                            Assunto: <i>{conteudo.assunto}</i>
+                            Subject: <i>{conteudo.assunto}</i>
                         </span>
                         <span>
-                            Cadastrado em: <i>{conteudo.createdFormat}</i>
+                            Registered at: <i>{conteudo.createdFormat}</i>
                         </span>
                     </div>
 
@@ -39,7 +39,7 @@ export default function Modal({conteudo, close}) {
 
                     {conteudo.complemento !== '' && (
                         <>
-                            <h3>Complemento</h3>
+                            <h3>Complement</h3>
                             <p>{conteudo.complemento}</p>
                         </>
                         )}

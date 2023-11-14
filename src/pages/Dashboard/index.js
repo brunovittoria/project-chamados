@@ -104,7 +104,7 @@ export default function Dashboard(){
           </Title>
 
           <div className='container dashboard'>
-            <span>Buscando chamados...</span>
+            <span>Loading Tickets...</span>
           </div>
 
         </div>
@@ -126,25 +126,25 @@ export default function Dashboard(){
             
           {chamados.length === 0 ? (
             <div className='container dashboard'>
-              <span>Nenhum chamado encontrado...</span>
+              <span>Tickets not found...</span>
               <Link to="/new" className='new'>
                 <FiPlus color='#FFF' size={25} />
-                Novo Chamado
+                New Ticket
               </Link>
             </div>
           ) : (
             <>
             <Link to={'/new'} className='new'>
               <FiPlus color='#fff' size={25}/>
-              Novo Chamado
+              New Ticket
             </Link>
             <table>
               <thead>
                 <tr>
-                  <th scope='col'>Cliente</th>
-                  <th scope='col'>Assunto</th>
+                  <th scope='col'>Client</th>
+                  <th scope='col'>Subject</th>
                   <th scope='col'>Status</th>
-                  <th scope='col'>Cadastrando em</th>
+                  <th scope='col'>Registered at</th>
                   <th scope='col'>#</th>
                 </tr>
               </thead>
@@ -174,8 +174,8 @@ export default function Dashboard(){
               </tbody>
             </table>
 
-            {loadingMore && <h3>Buscando mais chamados...</h3>}
-            {!loadingMore && !isempty && <button className='btn-more' onClick={handleMore}>Buscar Mais</button>}
+            {loadingMore && <h3>Loading more tickets...</h3>}
+            {!loadingMore && !isempty && <button className='btn-more' onClick={handleMore}>Search More</button>}
             </>
           )}
         </>
